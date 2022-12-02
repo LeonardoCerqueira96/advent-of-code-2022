@@ -73,16 +73,19 @@ fn main() -> Result<(), Box<dyn Error>> {
     let part2_time = t2.elapsed();
 
     // Print results
-    let parse_time = parse_time.as_millis() as f64 + parse_time.subsec_nanos() as f64 * 1e-6;
+    let parse_time =
+        parse_time.as_millis() as f64 + (parse_time.subsec_nanos() as f64 * 1e-6).fract();
     println!("Parsing and sorting the input took {:.6}ms\n", parse_time);
 
-    let part1_time = part1_time.as_millis() as f64 + part1_time.subsec_nanos() as f64 * 1e-6;
+    let part1_time =
+        part1_time.as_millis() as f64 + (part1_time.subsec_nanos() as f64 * 1e-6).fract();
     println!(
         "Part 1:\nTook {:.6}ms\nMax calories: {}\n",
         part1_time, max_calories
     );
 
-    let part2_time = part2_time.as_millis() as f64 + part2_time.subsec_nanos() as f64 * 1e-6;
+    let part2_time =
+        part2_time.as_millis() as f64 + (part2_time.subsec_nanos() as f64 * 1e-6).fract();
     println!(
         "Part 2:\nTook {:.6}ms\nSum of three largest max calories: {}\n",
         part2_time,
