@@ -1,11 +1,10 @@
 use std::collections::HashSet;
 use std::error::Error;
 use std::fs::File;
-use std::io::{BufRead, BufReader};
+use std::io::{self, BufRead, BufReader};
 use std::path::Path;
 use std::str::FromStr;
 use std::time::Instant;
-use std::{io, vec};
 
 enum Direction {
     Up,
