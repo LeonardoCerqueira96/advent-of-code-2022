@@ -4,6 +4,7 @@ use std::io::{self, BufReader, Read};
 use std::path::Path;
 use std::time::Instant;
 
+use num::Integer;
 use regex::Regex;
 
 const LINE_ENDING_WIN: &str = "\r\n";
@@ -55,16 +56,16 @@ impl Monkey {
 #[derive(Debug, Clone)]
 struct MonkeyPack {
     monkeys: Vec<Monkey>,
-    global_modulo: usize,
+    global_lcm: usize,
 }
 
 impl MonkeyPack {
     fn new(monkeys: Vec<Monkey>) -> Self {
-        let global_modulo = monkeys.iter().map(|m| m.throw_check.modulo).product();
+        let global_lcm = monkeys.iter().map(|m| m.throw_check.modulo).fold(1, |acc, m| acc.lcm(&m));
 
         MonkeyPack {
             monkeys,
-            global_modulo,
+            global_lcm,
         }
     }
 
@@ -78,9 +79,9 @@ impl MonkeyPack {
 
                 // Do inspect operation to increase worry level
                 worry_lvl = match self.monkeys[monkey_index].inspect_op {
-                    InspectOperation::Add(n) => (worry_lvl + n) % self.global_modulo,
-                    InspectOperation::Mult(n) => (worry_lvl * n) % self.global_modulo,
-                    InspectOperation::Pow => (worry_lvl * worry_lvl) % self.global_modulo,
+                    InspectOperation::Add(n) => (worry_lvl + n) % self.global_lcm,
+                    InspectOperation::Mult(n) => (worry_lvl * n) % self.global_lcm,
+                    InspectOperation::Pow => (worry_lvl * worry_lvl) % self.global_lcm,
                 };
 
                 // Increment inspeect counter
@@ -88,7 +89,7 @@ impl MonkeyPack {
 
                 if divide_worry_level {
                     // Monkey gets bored, divide worry level by three
-                    worry_lvl = (worry_lvl / 3) % self.global_modulo;
+                    worry_lvl = (worry_lvl / 3) % self.global_lcm;
                 }
 
                 // Check which monkey to throw to
