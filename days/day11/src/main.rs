@@ -79,9 +79,9 @@ impl MonkeyPack {
 
                 // Do inspect operation to increase worry level
                 worry_lvl = match self.monkeys[monkey_index].inspect_op {
-                    InspectOperation::Add(n) => (worry_lvl + n) % self.global_lcm,
-                    InspectOperation::Mult(n) => (worry_lvl * n) % self.global_lcm,
-                    InspectOperation::Pow => (worry_lvl * worry_lvl) % self.global_lcm,
+                    InspectOperation::Add(n) => worry_lvl + n,
+                    InspectOperation::Mult(n) => worry_lvl * n,
+                    InspectOperation::Pow => worry_lvl * worry_lvl,
                 };
 
                 // Increment inspeect counter
@@ -89,7 +89,7 @@ impl MonkeyPack {
 
                 if divide_worry_level {
                     // Monkey gets bored, divide worry level by three
-                    worry_lvl = (worry_lvl / 3) % self.global_lcm;
+                    worry_lvl = worry_lvl / 3;
                 }
 
                 // Check which monkey to throw to
@@ -100,7 +100,7 @@ impl MonkeyPack {
                 };
 
                 // Throw item
-                self.monkeys[monkey_thrown_to].items.push(worry_lvl);
+                self.monkeys[monkey_thrown_to].items.push(worry_lvl % self.global_lcm);
             }
         }
     }
