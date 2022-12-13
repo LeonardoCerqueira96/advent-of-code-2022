@@ -89,7 +89,7 @@ impl MonkeyPack {
 
                 if divide_worry_level {
                     // Monkey gets bored, divide worry level by three
-                    worry_lvl = worry_lvl / 3;
+                    worry_lvl /=  3;
                 }
 
                 // Check which monkey to throw to
